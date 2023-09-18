@@ -1,1 +1,3 @@
 Title, Author, Link
+DST-TowerDefenseTheme.mp3, DST, https://opengameart.org/content/tower-defense-theme
+NeonSans.ttf, GGBotNet, https://www.dafont.com/neon-sans.font
