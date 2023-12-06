@@ -14,8 +14,8 @@ public class SpiderBehavior : MonoBehaviour
     [Header("ExploreState")]
 	public float wanderSpeed;
 	public float playerChaseRange;
-    public float wanderRange;
     public float wanderNottice;
+    public Transform[] positions;
     public Vector3 target;
 
     [Header("Chase")]
@@ -76,7 +76,7 @@ public class SpiderBehavior : MonoBehaviour
     }
     private void ExploreInit()
     {
-        target = (Random.insideUnitSphere * wanderRange) + transform.position;
+        target = positions[Random.Range(0, positions.Length)].position;
         spiderMotionManager.destination = target;
         spiderMotionManager.speed = wanderSpeed;
     }
@@ -88,8 +88,8 @@ public class SpiderBehavior : MonoBehaviour
             currentState = SpiderState.chase;
             return;
         }
-        // if close to target or has been exploring for over 10 seconds
-        if(Vector3.Distance(target ,transform.position) < wanderNottice || clock > 10)
+        // if close to target or has been exploring for over 60 seconds
+        if(Vector3.Distance(target ,transform.position) < wanderNottice || clock > 60)
         {
             currentState = SpiderState.idle;
         }
