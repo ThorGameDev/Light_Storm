@@ -12,7 +12,10 @@ public class MenuBehavior : MonoBehaviour
     {
         SceneManager.LoadScene("TheGame");
     }
-
+    public void LoadScene(int choice)
+    {
+        SceneManager.LoadScene(choice);
+    }
     public IEnumerator FadeOutToQuit()
     {
         yield return null;

@@ -3,21 +3,22 @@ using Cinemachine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    private FootstepManager footstepManager;
     public float speed;
     public float rotationSpeed;
     public Rigidbody behavior;
 	public Camera view;
     public CinemachineVirtualCamera[] views;
     private int currentCameraState = 0;
-	void Start()
-	{
-        footstepManager = FindObjectOfType<FootstepManager>();
-	}
+    public GameObject blast;
+
     void Update()
     {
         MovementUpdate();
         CameraUpdate();
+        if(transform.position.y <= -20)
+        {
+            FindObjectOfType<GameManager>().Loss();
+        }
     }
 
     void MovementUpdate()
@@ -27,11 +28,11 @@ public class PlayerBehavior : MonoBehaviour
         lateralMotion.z = Input.GetAxis("Vertical");
         if(Input.GetAxis("Sidestep") > 0.9f)
         {
-            lateralMotion.x = Input.GetAxis("Horizontal");     
+            lateralMotion.x = Input.GetAxis("Horizontal");
         }
         else
         {
-            rotationalMotion = Input.GetAxis("Horizontal") * rotationSpeed; 
+            rotationalMotion = Input.GetAxis("Horizontal") * rotationSpeed;
         }
         lateralMotion = transform.TransformDirection(lateralMotion) * speed;
         lateralMotion.y = behavior.velocity.y;
@@ -53,5 +54,10 @@ public class PlayerBehavior : MonoBehaviour
         {
            switchCameraPressed = false;
         }
+    }
+    public void Detonate()
+    {
+        Instantiate(blast).transform.position = transform.position;
+        Destroy(this.gameObject);
     }
 }
