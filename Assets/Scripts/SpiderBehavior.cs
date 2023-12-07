@@ -10,6 +10,10 @@ public class SpiderBehavior : MonoBehaviour
 	public SpiderState currentState = SpiderState.init;
     private SpiderState priorState = SpiderState.init;
     public float clock;
+    public AudioSource footstepManager;
+    public AudioClip[] footsteps;
+    private float lastFootstep;
+    public float footstepRate;
 
     [Header("ExploreState")]
 	public float wanderSpeed;
@@ -73,6 +77,12 @@ public class SpiderBehavior : MonoBehaviour
                     break;
             }
         }
+        lastFootstep += Time.deltaTime;
+        if(lastFootstep > footstepRate)
+        {
+            lastFootstep -= footstepRate;
+            footstepManager.PlayOneShot( footsteps[Random.Range(0, footsteps.Length)] );
+        }
     }
     private void ExploreInit()
     {
@@ -126,6 +136,17 @@ public class SpiderBehavior : MonoBehaviour
             return;
         }
         spiderMotionManager.destination = player.transform.position; 
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+
+    }
+    public void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == "Player")
+        {
+            FindObjectOfType<GameManager>().Loss();
+        }
     }
 }
 [System.Serializable]

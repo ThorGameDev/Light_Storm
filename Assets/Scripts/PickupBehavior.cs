@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class PickupBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameManager gameManager;
+    public GameObject effect;
 
-    // Update is called once per frame
+    public Vector3 position;
     void Update()
     {
-        
+        this.transform.position = position + Vector3.up * Mathf.Sin(Time.time);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            gameManager.Pickup();
+            GameObject newEffect = Instantiate(effect);
+            newEffect.transform.position = transform.position;
+        }
     }
 }
