@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7933744786711059162}
   - component: {fileID: 472355434318517132}
   m_Layer: 0
-  m_Name: Bling
+  m_Name: PickupCollected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

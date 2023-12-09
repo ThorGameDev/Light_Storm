@@ -1,45 +1,46 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class SpiderBehavior : MonoBehaviour
 {
     [Header("Global")]
-    public GameObject player;
-	public NavMeshAgent spiderMotionManager;
-	public Animator spiderAnimator;
-	public SpiderState currentState = SpiderState.init;
+    private GameObject player;
+    private NavMeshAgent spiderMotionManager;
+    private SpiderState currentState = SpiderState.init;
     private SpiderState priorState = SpiderState.init;
-    public float clock;
+    private float clock;
     public AudioSource footstepManager;
     public AudioClip[] footsteps;
     private float lastFootstep;
     public float footstepRate;
 
-    [Header("ExploreState")]
-	public float wanderSpeed;
-	public float playerChaseRange;
+    [Header("Explore State")]
+    public float wanderSpeed;
+    public float playerChaseRange;
     public float wanderNottice;
     public Transform[] positions;
-    public Vector3 target;
+    private Vector3 target;
 
     [Header("Chase")]
-	public float chaseSpeed;
-	public float playerIgnoreRange;
+    public float chaseSpeed;
+    public float playerIgnoreRange;
 
-    [Header("IdleState")]
+    [Header("Idle State")]
     public float minWait;
     public float maxWait;
     private float wait;
 
     void Start()
     {
-       player = FindObjectOfType<PlayerBehavior>().gameObject; 
-       currentState = SpiderState.idle;
+        spiderMotionManager = this.GetComponent<NavMeshAgent>();
+        player = FindObjectOfType<PlayerBehavior>().gameObject;
+        currentState = SpiderState.idle;
     }
-    
+
     void Update()
     {
-        if(player == null)
+        if (player == null)
         {
             return;
         }
@@ -47,41 +48,41 @@ public class SpiderBehavior : MonoBehaviour
         switch (currentState)
         {
             case SpiderState.explore:
-                ExploreState(); 
+                ExploreState();
                 break;
             case SpiderState.idle:
-                IdleState(); 
+                IdleState();
                 break;
             case SpiderState.chase:
-                ChaseState(); 
+                ChaseState();
                 break;
             default:
                 break;
         }
-        if(currentState != priorState)
+        if (currentState != priorState)
         {
             priorState = currentState;
             clock = 0;
             switch (currentState)
             {
                 case SpiderState.explore:
-                    ExploreInit(); 
+                    ExploreInit();
                     break;
                 case SpiderState.idle:
-                    IdleInit(); 
+                    IdleInit();
                     break;
                 case SpiderState.chase:
-                    ChaseInit(); 
+                    ChaseInit();
                     break;
                 default:
                     break;
             }
         }
         lastFootstep += Time.deltaTime;
-        if(lastFootstep > footstepRate)
+        if (lastFootstep > footstepRate)
         {
             lastFootstep -= footstepRate;
-            footstepManager.PlayOneShot( footsteps[Random.Range(0, footsteps.Length)] );
+            footstepManager.PlayOneShot(footsteps[Random.Range(0, footsteps.Length)]);
         }
     }
     private void ExploreInit()
@@ -93,13 +94,13 @@ public class SpiderBehavior : MonoBehaviour
     private void ExploreState()
     {
         // if close to player
-        if(Vector3.Distance(player.transform.position,this.transform.position) < playerChaseRange)
+        if (Vector3.Distance(player.transform.position, this.transform.position) < playerChaseRange)
         {
             currentState = SpiderState.chase;
             return;
         }
         // if close to target or has been exploring for over 60 seconds
-        if(Vector3.Distance(target ,transform.position) < wanderNottice || clock > 60)
+        if (Vector3.Distance(target, transform.position) < wanderNottice || clock > 60)
         {
             currentState = SpiderState.idle;
         }
@@ -107,19 +108,19 @@ public class SpiderBehavior : MonoBehaviour
     private void IdleInit()
     {
         spiderMotionManager.speed = 0;
-        wait = Random.Range(minWait,maxWait);
+        wait = Random.Range(minWait, maxWait);
         spiderMotionManager.destination = transform.position;
     }
     private void IdleState()
     {
         // if close to player
-        if(Vector3.Distance(player.transform.position,this.transform.position) < playerChaseRange)
+        if (Vector3.Distance(player.transform.position, this.transform.position) < playerChaseRange)
         {
             currentState = SpiderState.chase;
             return;
         }
         // if waited a while
-        if( clock > wait)
+        if (clock > wait)
         {
             currentState = SpiderState.explore;
         }
@@ -130,12 +131,12 @@ public class SpiderBehavior : MonoBehaviour
     }
     private void ChaseState()
     {
-        if(Vector3.Distance(player.transform.position,this.transform.position) > playerIgnoreRange)
+        if (Vector3.Distance(player.transform.position, this.transform.position) > playerIgnoreRange)
         {
             currentState = SpiderState.idle;
             return;
         }
-        spiderMotionManager.destination = player.transform.position; 
+        spiderMotionManager.destination = player.transform.position;
     }
     public void OnCollisionEnter(Collision collision)
     {
@@ -153,7 +154,7 @@ public class SpiderBehavior : MonoBehaviour
 public enum SpiderState
 {
     init,
-	explore,
-	idle,
-	chase,
+    explore,
+    idle,
+    chase,
 }

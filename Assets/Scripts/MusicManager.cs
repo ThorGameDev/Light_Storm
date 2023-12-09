@@ -53,7 +53,7 @@ public class MusicManager : MonoBehaviour
         UpdateSong();
     }
     private void UpdateSong()
-    { 
+    {
         //Check if song has been played within the TimeTillAudioForget
         if (internalSongs[CurrentSong].LastPlayed + TimeTillAudioForget > Time.time && CurrentSong != PriorSong) //The Song has not been played and is not the same song
         {
@@ -61,7 +61,7 @@ public class MusicManager : MonoBehaviour
             if (internalSongs[CurrentSong].PointInSong - AudioBacktrack > 0)
             {
                 AudioPlayer.time = internalSongs[CurrentSong].PointInSong - AudioBacktrack;
-                StartCoroutine(FadeIn(AudioPlayer, Fade)) ;
+                StartCoroutine(FadeIn(AudioPlayer, Fade));
             }
             else
             {
@@ -69,7 +69,7 @@ public class MusicManager : MonoBehaviour
             }
             AudioPlayer.Play();
         }
-        else if(CurrentSong == PriorSong) // Same song as before
+        else if (CurrentSong == PriorSong) // Same song as before
         {
             AudioPlayer.clip = internalSongs[CurrentSong].AC;
             AudioPlayer.time = internalSongs[CurrentSong].PointInSong;
@@ -107,14 +107,14 @@ public class MusicManager : MonoBehaviour
         internalSongs[CurrentSong].PointInSong = AudioPlayer.time;
         internalSongs[CurrentSong].LastPlayed = Time.time;
         PriorSong = CurrentSong;
-        if(!InFade)
+        if (!InFade)
         {
             AudioPlayer.volume = 1;
         }
     }
     public void PlaySound(AudioClip Sound)
     {
-        AudioPlayer.PlayOneShot(Sound,1);
+        AudioPlayer.PlayOneShot(Sound, 1);
     }
     private static bool InFade;
     public static IEnumerator FadeIn(AudioSource audioSource, float FadeTime)

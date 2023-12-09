@@ -1,14 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Light))]
 public class LightFade : MonoBehaviour
 {
-	public Light Mine;
-	public float speed;
-    void Update()
+    private Light mine;
+    public float speed;
+    private void Start()
     {
-        
-		Mine.intensity -= Time.deltaTime * speed;
+        mine = this.GetComponent<Light>();
+    }
+    private void Update()
+    {
+
+        mine.intensity -= Time.deltaTime * speed;
     }
 }

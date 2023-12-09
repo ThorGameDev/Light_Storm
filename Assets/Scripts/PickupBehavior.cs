@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PickupBehavior : MonoBehaviour
 {
-    public GameManager gameManager;
+    [HideInInspector] public GameManager gameManager;
+    [HideInInspector] public Vector3 position;
+
     public GameObject effect;
 
-    public Vector3 position;
-    void Update()
+    private void Update()
     {
         this.transform.position = position + Vector3.up * Mathf.Sin(Time.time);
     }

@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 5872973456912653871}
   - component: {fileID: 7008676343915510383}
   m_Layer: 0
-  m_Name: Blast
+  m_Name: PlayerDied
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
