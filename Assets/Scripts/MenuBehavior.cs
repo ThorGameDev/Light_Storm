@@ -4,20 +4,32 @@ using UnityEngine.SceneManagement;
 
 public class MenuBehavior : MonoBehaviour
 {
+    public Fader fadeObject;
     public void Quit()
     {
-        Application.Quit();
+        StartCoroutine(FadeAndQuit());
     }
-    public void GameStart()
-    {
-        SceneManager.LoadScene("TheGame");
-    }
+
     public void LoadScene(int choice)
     {
-        SceneManager.LoadScene(choice);
+        StartCoroutine(FadeToScene(choice));
     }
-    public IEnumerator FadeOutToQuit()
+
+    public IEnumerator FadeAndQuit()
     {
-        yield return null;
+        fadeObject.inFade = true;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(fadeObject.speed);
+        yield return new WaitForEndOfFrame();
+        Application.Quit();
+    }
+
+    public IEnumerator FadeToScene(int choice)
+    {
+        fadeObject.inFade = true;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(fadeObject.speed);
+        yield return new WaitForEndOfFrame();
+        SceneManager.LoadScene(choice);
     }
 }

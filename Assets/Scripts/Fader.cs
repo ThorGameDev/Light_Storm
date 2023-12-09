@@ -1,14 +1,20 @@
 using UnityEngine.UI;
 using UnityEngine;
 
+[RequireComponent(typeof(Image))]
 public class Fader : MonoBehaviour
 {
-    public bool inFade;
+    [HideInInspector] public bool inFade = false;
     public float speed;
-    public float point;
-    public Image self;
+    private float point = 1;
+    private Image self;
 
-    void Update()
+    private void Start()
+    {
+        self = this.GetComponent<Image>();
+    }
+
+    private void Update()
     {
         if (inFade)
         {

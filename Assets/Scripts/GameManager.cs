@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -7,15 +5,16 @@ public class GameManager : MonoBehaviour
 {
     public PickupBehavior pickup;
     public Transform[] positions;
-    public int count;
-    public TMP_Text count_display;
     public GameObject gameOver;
 
-    public void Start()
+    private int count;
+    public TMP_Text countDisplay;
+
+    private void Start()
     {
         SetPos();
         count = 0;
-        count_display.text = count.ToString();
+        countDisplay.text = count.ToString();
         pickup.gameManager = this;
     }
 
@@ -27,13 +26,12 @@ public class GameManager : MonoBehaviour
     public void Pickup()
     {
         count += 1;
-        count_display.text = count.ToString();
+        countDisplay.text = count.ToString();
         SetPos();
     }
 
     public void Loss()
     {
-        FindObjectOfType<Fader>().inFade = true;
         gameOver.SetActive(true);
         FindObjectOfType<PlayerBehavior>().Detonate();
         Destroy(this);
